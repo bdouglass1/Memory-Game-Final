@@ -122,9 +122,15 @@ function moveCounter()
 function cardSelected()
 {
     cardsOpened.push(this); 
+    this.removeEventListener("click", turnCard);    //removes event listener so same card can't be chosen to be matched with itself
+    this.removeEventListener("click", cardSelected);    //removes event listener so same card can't be chosen to be matched with itself
     let cardsChosenLength = cardsOpened.length;
     if(cardsChosenLength === 2)
     {
+        for (let i = 0; i < chooseCardArray.length; i++){          
+            chooseCardArray[i].addEventListener("click", turnCard);
+            chooseCardArray[i].addEventListener("click", cardSelected);
+         };
         moveCounter();
         if(cardsOpened[0].type === cardsOpened[1].type) //checks to see if cards match
         {
@@ -203,6 +209,7 @@ function resetGame() {
             allStars[i].classList.remove("hideStars");
         }
 
+        cardsOpened = []; //empies cards currently in the opened array
         
         //reset timer
         let timer2 = document.querySelector(".timer");
